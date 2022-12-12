@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 
-//** This is a nested dynamic route */
+/** This is a nested dynamic route */
 function SelectedClientProjectPage() {
   const { query } = useRouter();
   return (

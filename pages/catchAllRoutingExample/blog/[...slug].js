@@ -1,4 +1,4 @@
-//** Catch-All Routes Example */
+/** Catch-All Routes Example */
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 

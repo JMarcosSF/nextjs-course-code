@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-//** Navigating to dynamic routes
+/** Navigating to dynamic routes */
 function ClientsPage() {
   const clients = [
     { id: "abc", name: "ABC Co" },
