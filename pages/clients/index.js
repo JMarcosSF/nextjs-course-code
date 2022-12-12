@@ -1,5 +1,25 @@
+import Link from "next/link";
+
+//** Navigating to dynamic routes
 function ClientsPage() {
-    return (<div><h1>The Clients Page</h1></div>)
+  const clients = [
+    { id: "abc", name: "ABC Co" },
+    { id: "123", name: "123 Co" },
+  ];
+  return (
+    <div>
+      <h1>The Clients Page</h1>
+      <ul>
+        {clients.map((client) => {
+          return (
+            <li>
+              <Link href={`/clients/${client.id}`}>{client.name}</Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
 
 export default ClientsPage;
