@@ -1,32 +1,53 @@
 import { useState, useEffect } from "react";
+import useSWR from "swr";
 
 const LastSalesPage = (props) => {
   const [sales, setSales] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+
+  const { data, error } = useSWR(
+    "https://nextjs-course-3965f-default-rtdb.firebaseio.com/sales.json",
+    (url) => fetch(url).then((res) => res.json())
+  );
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch("https://nextjs-course-3965f-default-rtdb.firebaseio.com/sales.json")
-      .then((resp) => resp.json())
-      .then((data) => {
-        const transformedSales = [];
+    const transformedSales = [];
+    if (data) {
+      for (const key in data) {
+        transformedSales.push({
+          id: key,
+          username: data[key].salesperson,
+          vol: data[key].vol,
+        });
+      }
+    }
 
-        for (const key in data) {
-          transformedSales.push({
-            id: key,
-            username: data[key].salesperson,
-            vol: data[key].vol,
-          });
-        }
+    setSales(transformedSales);
+  }, [data]);
 
-        setSales(transformedSales);
-        setIsLoading(false);
-      });
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   fetch("https://nextjs-course-3965f-default-rtdb.firebaseio.com/sales.json")
+  //     .then((resp) => resp.json())
+  //     .then((data) => {
+  //       const transformedSales = [];
+  //
+  //       for (const key in data) {
+  //         transformedSales.push({
+  //           id: key,
+  //           username: data[key].salesperson,
+  //           vol: data[key].vol,
+  //         });
+  //       }
+  //
+  //       setSales(transformedSales);
+  //       setIsLoading(false);
+  //     });
+  // }, []);
 
   return (
     <div>
-      {isLoading ? (
+      {!data ? (
         <div>LOADING</div>
       ) : (
         <div>
