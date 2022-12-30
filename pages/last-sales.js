@@ -54,7 +54,7 @@ const LastSalesPage = (props) => {
         <div>
           LOADED
           <ul>
-            {sales.map((sale) => (
+            {sales?.map((sale) => (
               <li key={sale.username}>{sale.username}</li>
             ))}
           </ul>
