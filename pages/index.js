@@ -1,11 +1,12 @@
 // import styles from "../styles/Home.module.css";
-
+import fs from "fs/promises";
+import path from "path";
 export default function Home(props) {
-  const { products } = props;
+  const { events } = props;
   return (
     <ul>
-      {products.map((product) => (
-        <li key={product.id}>{product.title}</li>
+      {events.map((event) => (
+        <li key={event.id}>{event.title}</li>
       ))}
     </ul>
   );
@@ -14,13 +15,14 @@ export default function Home(props) {
 // getStaticProps get's executed FIRST before the component function
 // The below ALL happens on the server side IN ADVANCE
 export async function getStaticProps() {
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
+  const jsonData = await fs.readFile(filePath);
+  console.log(jsonData)
+  const data = JSON.parse(jsonData);
+
   return {
     props: {
-      products: [
-        { id: 1, title: "Product 1" },
-        { id: 2, title: "Product 2" },
-        { id: 3, title: "Product 3" },
-      ],
+      events: data.events
     },
   };
 }
