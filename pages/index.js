@@ -18,12 +18,14 @@ export default function Home(props) {
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
-  console.log(jsonData)
   const data = JSON.parse(jsonData);
 
+  // revalidate here states that the page should NOT be regenerated UNLESS
+  // it's already been 10 seconds since it was LAST generate ON PRODUCTION!!!
   return {
     props: {
       events: data.events
     },
+    revalidate: 10
   };
 }
