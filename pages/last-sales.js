@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import useSWR from "swr";
 
 const LastSalesPage = (props) => {
-  const [sales, setSales] = useState([]);
+  console.log(props);
+  const [sales, setSales] = useState(props.sales);
   // const [isLoading, setIsLoading] = useState(false);
 
   const { data, error } = useSWR(
@@ -63,4 +64,26 @@ const LastSalesPage = (props) => {
   );
 };
 
+// Using getStaticProps to pre-generate data and possibly to revalidate the data with the revalidate key
+export const getStaticProps = async () => {
+  const response = await fetch(
+    "https://nextjs-course-3965f-default-rtdb.firebaseio.com/sales.json"
+  );
+
+  const data = await response.json();
+  const transformedSales = [];
+
+  for (const key in data) {
+    transformedSales.push({
+      id: key,
+      username: data[key].salesperson,
+      vol: data[key].vol,
+    });
+  }
+
+  return {
+    props: { sales: transformedSales },
+    revalidate: 10,
+  };
+};
 export default LastSalesPage;
