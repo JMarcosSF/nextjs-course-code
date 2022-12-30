@@ -2,14 +2,20 @@
 import fs from "fs/promises";
 import path from "path";
 import Link from "next/link";
+
 export default function Home(props) {
   const { events } = props;
   return (
-    <ul>
-      {events.map((event) => (
-        <li key={event.id}><Link href={`/${event.id}`}>{event.title}</Link></li>
-      ))}
-    </ul>
+    <div>
+      <ul>
+        {events.map((event) => (
+          <li key={event.id}>
+            <Link href={`/${event.id}`}>{event.title}</Link>
+          </li>
+        ))}
+      </ul>
+      <Link href={"/users/skizmic"}>User</Link>
+    </div>
   );
 }
 
@@ -26,7 +32,7 @@ export async function getStaticProps(context) {
   // it's already been 10 seconds since it was LAST generate ON PRODUCTION!!!
   return {
     props: {
-      events: data.events
+      events: data.events,
     },
     revalidate: 10,
     // notFound: true  // Can use this if we want to programmatically render the 404 page
