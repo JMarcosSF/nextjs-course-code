@@ -20,6 +20,7 @@ export async function getStaticProps() {
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
 
+  // ISR: Incremental Static Generation
   // revalidate here states that the page should NOT be regenerated UNLESS
   // it's already been 10 seconds since it was LAST generate ON PRODUCTION!!!
   return {
