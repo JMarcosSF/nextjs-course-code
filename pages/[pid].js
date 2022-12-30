@@ -54,6 +54,6 @@ export async function getStaticPaths() {
     //   // { params: { pid: "e2" } },
     //   // { params: { pid: "e3" } },
     // ],
-    fallback: true,
+    fallback: false,
   };
 }
