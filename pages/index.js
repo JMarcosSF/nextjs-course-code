@@ -15,7 +15,7 @@ export default function Home(props) {
 // getStaticProps get's executed FIRST before the component function
 // The below ALL happens on the server side IN ADVANCE
 // getStaticProps() WILL NOT render on the client side.
-export async function getStaticProps() {
+export async function getStaticProps(context) {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
@@ -27,6 +27,8 @@ export async function getStaticProps() {
     props: {
       events: data.events
     },
-    revalidate: 10
+    revalidate: 10,
+    // notFound: true  // Can use this if we want to programmatically render the 404 page
+    // redirect:
   };
 }
