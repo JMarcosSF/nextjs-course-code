@@ -1,12 +1,13 @@
 // import styles from "../styles/Home.module.css";
 import fs from "fs/promises";
 import path from "path";
+import Link from "next/link";
 export default function Home(props) {
   const { events } = props;
   return (
     <ul>
       {events.map((event) => (
-        <li key={event.id}>{event.title}</li>
+        <li key={event.id}><Link href={`/${event.id}`}>{event.title}</Link></li>
       ))}
     </ul>
   );
