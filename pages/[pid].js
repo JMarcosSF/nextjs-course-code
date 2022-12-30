@@ -7,7 +7,7 @@ export default function EventDetailsPage(props) {
   // THIS is the fallback content which is rendered
   // while NextJS is loading the event.
   if (!event) {
-    return <p>loading...</p>
+    return <p>loading...</p>;
   }
   return (
     <>
@@ -21,7 +21,7 @@ const getData = async () => {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
   return JSON.parse(jsonData);
-}
+};
 export async function getStaticProps(context) {
   const { params } = context;
 
@@ -30,6 +30,10 @@ export async function getStaticProps(context) {
   const data = await getData();
 
   const event = data.events.find((event) => event.id === eventId);
+
+  if (!event) {
+    return { notFound: true };
+  }
   return {
     props: {
       event: event,
@@ -44,9 +48,9 @@ export async function getStaticProps(context) {
 export async function getStaticPaths() {
   const data = await getData();
 
-  const ids = data.events.map(event => event.id)
+  const ids = data.events.map((event) => event.id);
 
-  const params = ids.map(id => ({params: {pid: id}}));
+  const params = ids.map((id) => ({ params: { pid: id } }));
   return {
     paths: params,
     // paths: [
@@ -54,6 +58,6 @@ export async function getStaticPaths() {
     //   // { params: { pid: "e2" } },
     //   // { params: { pid: "e3" } },
     // ],
-    fallback: false,
+    fallback: true,
   };
 }
