@@ -14,6 +14,7 @@ export default function Home(props) {
 
 // getStaticProps get's executed FIRST before the component function
 // The below ALL happens on the server side IN ADVANCE
+// getStaticProps() WILL NOT render on the client side.
 export async function getStaticProps() {
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
