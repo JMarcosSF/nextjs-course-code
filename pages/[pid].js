@@ -16,14 +16,18 @@ export default function EventDetailsPage(props) {
     </>
   );
 }
+
+const getData = async () => {
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
+  const jsonData = await fs.readFile(filePath);
+  return JSON.parse(jsonData);
+}
 export async function getStaticProps(context) {
   const { params } = context;
 
   const eventId = params.pid;
 
-  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
-  const jsonData = await fs.readFile(filePath);
-  const data = JSON.parse(jsonData);
+  const data = await getData();
 
   const event = data.events.find((event) => event.id === eventId);
   return {
@@ -38,12 +42,18 @@ export async function getStaticProps(context) {
 // With "fallback: true", we tell NextJS
 // can also use fallback: blocking
 export async function getStaticPaths() {
+  const data = await getData();
+
+  const ids = data.events.map(event => event.id)
+
+  const params = ids.map(id => ({params: {pid: id}}));
   return {
-    paths: [
-      { params: { pid: "e1" } },
-      // { params: { pid: "e2" } },
-      // { params: { pid: "e3" } },
-    ],
+    paths: params,
+    // paths: [
+    //   // { params: { pid: "e1" } },
+    //   // { params: { pid: "e2" } },
+    //   // { params: { pid: "e3" } },
+    // ],
     fallback: true,
   };
 }
