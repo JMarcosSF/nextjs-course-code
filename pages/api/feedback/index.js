@@ -4,13 +4,15 @@ import { randomUUID } from "crypto";
 import fs from "fs";
 import path from "path";
 
-const getFeedbackData = (filePath) => {
+export const buildFeedbackPath = () => {
+  return path.join(process.cwd(), "data", "feedback.json");
+}
+export const getFeedbackData = (filePath) => {
   const fileData = fs.readFileSync(filePath);
   return JSON.parse(fileData);
 };
 
 const handler = (req, res) => {
-  const filePath = path.join(process.cwd(), "data", "feedback.json");
   if (req.method === "POST") {
     const email = req.body.email;
     const text = req.body.text;
@@ -21,12 +23,12 @@ const handler = (req, res) => {
       text,
     };
 
-    const data = getFeedbackData(filePath);
+    const data = getFeedbackData();
     data.push(newFeedback);
     fs.writeFileSync(filePath, JSON.stringify(data));
     res.status(201).json({ message: "Success!", feedback: newFeedback });
   } else {
-    const data = getFeedbackData(filePath);
+    const data = getFeedbackData(buildFeedbackPath());
     res.status(200).json({ message: "This works!!!", feedback: data });
   }
 };
