@@ -15,7 +15,7 @@ function FeedbackPage(props) {
 
   return (
     <Fragment>
-      {feedbackData && <p>{feedbackData.email}</p>}
+      {feedbackData && <p>{feedbackData?.email}</p>}
       <ul>
         {props.feedbackItems.map((item) => (
           <li key={item.id}>
