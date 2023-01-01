@@ -1,7 +1,13 @@
-import { useRef, useState } from "react";
+import { useRef, useContext, useEffect } from "react";
+import { FeedbackContext } from "./state/feedbackContext";
 
 const FeedbackForm = (props) => {
-  const [feedbackItems, setFeedbackItems] = useState([]);
+  const { feedbackList, getAllFeedback, createFeedback } = useContext(FeedbackContext);
+
+  useEffect(() => {
+    getAllFeedback();
+  }, []);
+
 
   const emailInputRef = useRef();
   const feedbackInputRef = useRef();
@@ -12,25 +18,9 @@ const FeedbackForm = (props) => {
     const enteredEmail = emailInputRef.current.value;
     const enteredFeedback = feedbackInputRef.current.value;
 
-    const reqBody = { email: enteredEmail, text: enteredFeedback };
+    const newFeedback = { email: enteredEmail, text: enteredFeedback };
 
-    fetch("/api/feedback", {
-      method: "POST",
-      body: JSON.stringify(reqBody),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }
-
-  function loadFeedbackHandler() {
-    fetch("/api/feedback")
-      .then((response) => response.json())
-      .then((data) => {
-        setFeedbackItems(data.feedback);
-      });
+    createFeedback(newFeedback);
   }
 
   return (
@@ -47,9 +37,9 @@ const FeedbackForm = (props) => {
         <button>Send Feedback</button>
       </form>
       <hr />
-      <button onClick={loadFeedbackHandler}>Load Feedback</button>
+      <button onClick={getAllFeedback}>Load Feedback</button>
       <ul>
-        {feedbackItems.map((item) => (
+        {feedbackList.map((item) => (
           <li key={item.id}>{item.text}</li>
         ))}
       </ul>

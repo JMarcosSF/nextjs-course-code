@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
-import FeedbackForm from "../components/FeedbackForm";
+import { FeedbackProvider } from "../components/feedback/state/feedbackContext";
+import FeedbackForm from "../components/feedback/FeedbackForm";
 
 function HomePage() {
   return (
-    <div>
-      <h1>The Home Page</h1>
-      <FeedbackForm />
-    </div>
+    <FeedbackProvider>
+      <div>
+        <h1>The Home Page</h1>
+        <FeedbackForm />
+      </div>
+    </FeedbackProvider>
   );
 }
 
