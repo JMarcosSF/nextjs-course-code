@@ -1,9 +1,28 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from "react";
 
-import { buildFeedbackPath, getFeedbackData } from '../api/feedback/index';
+import { buildFeedbackPath, getFeedbackData } from "../api/feedback/index";
+
+// const CAT_SERVICE = {
+//   fetchCatData: async () => {
+//     const response = await fetch("https://catfact.ninja/breeds");
+//     const data = await response.json();
+//
+//     return data;
+//   }
+// }
 
 function FeedbackPage(props) {
   const [feedbackData, setFeedbackData] = useState();
+
+  useEffect(() => {
+    const fetchText = async () => {
+      const data = await CAT_SERVICE.fetchCatData();
+      const json = await data;
+      console.log(json.data)
+    };
+
+    fetchText().catch(e => console.log(e));
+  }, []);
 
   function loadFeedbackHandler(feedbackId) {
     fetch(`/api/feedback/${feedbackId}`)
@@ -19,7 +38,7 @@ function FeedbackPage(props) {
       <ul>
         {props.feedbackItems.map((item) => (
           <li key={item.id}>
-            {item.text}{' '}
+            {item.text}{" "}
             <button onClick={loadFeedbackHandler.bind(null, item.id)}>
               Show Details
             </button>
@@ -31,6 +50,9 @@ function FeedbackPage(props) {
 }
 
 export async function getStaticProps() {
+  // const catData = await CAT_SERVICE.fetchCatData();
+  // const json = await catData;
+  // console.log(json.data)
   const filePath = buildFeedbackPath();
   const data = getFeedbackData(filePath);
   return {
